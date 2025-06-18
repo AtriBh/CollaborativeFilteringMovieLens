@@ -106,6 +106,6 @@ if st.session_state.user_id:
         if rating > 0:
             user_ratings.loc[uid, m] = rating
             st.success(f"You rated {m} as {rating}★")
-            st.experimental_rerun()
+            st.rerun()
 else:
     st.info("Log in with your User ID to see recommendations.")
