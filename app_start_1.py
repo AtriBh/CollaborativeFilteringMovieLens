@@ -80,21 +80,23 @@ def get_recommendations(user_id, corrMatrix, userRatings, rating_threshold=4, to
     return cf_scores.nlargest(top_n).index.tolist()
 
 # ------------------ APP UI ------------------
+# ------------------ APP UI ------------------
 st.title("🎬 Movie Recommender System")
 
-# Sidebar login section
 if st.session_state.user_id is None:
-    with st.sidebar:
-        user_input = st.text_input("Enter User ID")
-        if st.button("Login"):
-            try:
-                uid = int(user_input)
-                if uid in user_ratings.index:
-                    st.session_state.user_id = uid
-                else:
-                    st.warning("User ID not found.")
-            except ValueError:
-                st.warning("Please enter a numeric User ID.")
+    st.subheader("Login")
+    user_input = st.text_input("Enter User ID")
+    if st.button("Login"):
+        try:
+            uid = int(user_input)
+            if uid in user_ratings.index:
+                st.session_state.user_id = uid
+                st.experimental_rerun()  # rerun after login
+            else:
+                st.warning("User ID not found.")
+        except ValueError:
+            st.warning("Please enter a numeric User ID.")
+
 
 # Main content when logged in
 if st.session_state.user_id:
