@@ -41,7 +41,7 @@ def find_file(filename, search_dir):
             return os.path.join(root, filename)
     raise FileNotFoundError(f"{filename} not found in {search_dir}")
 
-@st.cache_data(allow_output_mutation=True)
+@st.cache_resource
 def load_pickles():
     # Ensure zips are extracted
     ensure_unzipped('user_ratings.zip', 'user_ratings_extract')
