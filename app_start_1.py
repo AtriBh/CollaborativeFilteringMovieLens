@@ -91,7 +91,7 @@ if st.session_state.user_id is None:
             uid = int(user_input)
             if uid in user_ratings.index:
                 st.session_state.user_id = uid
-                st.experimental_rerun()  # rerun after login
+                st.rerun()  # rerun after login
             else:
                 st.warning("User ID not found.")
         except ValueError:
