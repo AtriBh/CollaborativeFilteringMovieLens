@@ -9,6 +9,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data1")  # directory containing zips and json
 
+# ------------------ SESSION INIT ------------------
+if "user_id" not in st.session_state:
+    st.session_state.user_id = None
+
 # ------------------ FUNCTIONS ------------------
 
 def ensure_unzipped(zip_filename, extract_dir, overwrite=False):
@@ -78,20 +82,21 @@ def get_recommendations(user_id, corrMatrix, userRatings, rating_threshold=4, to
 # ------------------ APP UI ------------------
 st.title("🎬 Movie Recommender System")
 
-if "user_id" not in st.session_state:
-    st.session_state.user_id = None
+# Sidebar login section
+if st.session_state.user_id is None:
+    with st.sidebar:
+        user_input = st.text_input("Enter User ID")
+        if st.button("Login"):
+            try:
+                uid = int(user_input)
+                if uid in user_ratings.index:
+                    st.session_state.user_id = uid
+                else:
+                    st.warning("User ID not found.")
+            except ValueError:
+                st.warning("Please enter a numeric User ID.")
 
-user_input = st.sidebar.text_input("Enter User ID")
-if st.sidebar.button("Login"):
-    try:
-        uid = int(user_input)
-        if uid in user_ratings.index:
-            st.session_state.user_id = uid
-        else:
-            st.warning("User ID not found.")
-    except ValueError:
-        st.warning("Please enter a numeric User ID.")
-
+# Main content when logged in
 if st.session_state.user_id:
     uid = st.session_state.user_id
     st.subheader(f"Welcome, User {uid}")
@@ -109,3 +114,4 @@ if st.session_state.user_id:
             st.rerun()
 else:
     st.info("Log in with your User ID to see recommendations.")
+
