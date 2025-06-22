@@ -8,10 +8,10 @@
 > You must use a valid **User ID** from the **MovieLens dataset** to log in.
 > Specifically, the User ID must be present in the `user_ratings` **DataFrame** used internally by the app.
 > Attempting to log in with a random or missing ID will result in an error message.
+> Heres demo --> https://collaborativefilteringmovielens-4ewoyerxznfin2xpejz93y.streamlit.app/
 
 ---
 
-Here’s how that fits in the full `README.md`:
 
 ---
 
