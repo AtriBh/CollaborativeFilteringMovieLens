@@ -15,7 +15,6 @@ Here’s how that fits in the full `README.md`:
 
 ---
 
-```markdown
 # 🎬 Movie Recommender System
 
 A real-time interactive movie recommendation web app built using **Streamlit** and the **MovieLens** dataset. This project leverages **Collaborative Filtering** to suggest movies based on a user's past ratings and preferences.
