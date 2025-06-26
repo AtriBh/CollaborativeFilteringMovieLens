@@ -56,16 +56,24 @@ movie_titles = load_movie_titles()
 def get_recommendations(user_id, corrMatrix, userRatings, rating_threshold=4, top_n=20):
     if user_id not in userRatings.index:
         return []
-    user_rated = userRatings.loc[user_id].dropna()
-    user_rated = user_rated[user_rated > rating_threshold]
+
+    # all the movies the user has rated (no threshold here)
+    all_rated = userRatings.loc[user_id].dropna()
+
+    # only high‐rated movies contribute similarity scores
     sim_candidates = pd.Series(dtype=float)
-    for item, rating in user_rated.items():
+    for item, rating in all_rated[all_rated > rating_threshold].items():
         if item in corrMatrix:
             sims = corrMatrix[item].dropna() * rating
             sim_candidates = pd.concat([sim_candidates, sims])
+
     cf_scores = sim_candidates.groupby(level=0).sum()
-    cf_scores = cf_scores.drop(user_rated.index, errors='ignore')
+
+    # drop every movie the user has already rated, regardless of score
+    cf_scores = cf_scores.drop(all_rated.index, errors='ignore')
+
     return cf_scores.nlargest(top_n).index.tolist()
+
 
 # ------------------ APP UI ------------------
 st.title("🎬 Movie Recommender System")
