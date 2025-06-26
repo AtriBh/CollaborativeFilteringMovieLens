@@ -107,9 +107,12 @@ if st.session_state.user_id:
     for m in recs:
         st.markdown(m)
         rating = st.slider(f"Rate {m}", 0.0, 5.0, 0.0, 0.5, key=m)
-        if rating > 0:
+    
+        previous_rating = user_ratings.loc[uid].get(m, 0.0)
+        if rating != previous_rating and rating > 0:
             user_ratings.loc[uid, m] = rating
             st.success(f"You rated {m} as {rating}★")
             st.rerun()
+
 
 
